@@ -1,26 +1,25 @@
 @ECHO OFF
 CALL Config.bat
 
-:: Sending a single DICOM file from each size category for connectivity testing.
-:: Utilizing verbose mode for detailed output.
+ECHO Simple Connectivity Test Starting...
+REM The following commands send one DICOM file from each specified folder to the corresponding SCP instance.
 
-ECHO Sending a single DICOM file from the KB005 folder...
-StoreSCU.exe -v -aet %AE% -aec %AE% %SCP% %PORT% KB005\*.dcm
+REM Send a single DICOM file from the KB005 folder
+ECHO Sending a DICOM file from the KB005 folder...
+StoreSCU.exe -v -aet STORESCU -aec STORESCP128K %SCP% 9000 KB005\*.dcm
 
-ECHO Sending a single DICOM file from the KB032 folder...
-StoreSCU.exe -v -aet %AE% -aec %AE% %SCP% %PORT% KB032\*.dcm
+REM Send a single DICOM file from the KB032 folder
+ECHO Sending a DICOM file from the KB032 folder...
+StoreSCU.exe -v -aet STORESCU -aec STORESCP256K %SCP% 9001 KB032\*.dcm
 
-ECHO Sending a single DICOM file from the KB128 folder...
-StoreSCU.exe -v -aet %AE% -aec %AE% %SCP% %PORT% KB128\*.dcm
+REM Send a single DICOM file from the KB128 folder
+ECHO Sending a DICOM file from the KB128 folder...
+StoreSCU.exe -v -aet STORESCU -aec STORESCP512K %SCP% 9002 KB128\*.dcm
 
-ECHO Sending a single DICOM file from the KB256 folder...
-StoreSCU.exe -v -aet %AE% -aec %AE% %SCP% %PORT% KB256\*.dcm
+REM Send a single DICOM file from the KB256 folder
+ECHO Sending a DICOM file from the KB256 folder...
+StoreSCU.exe -v -aet STORESCU -aec STORESCPMB01 %SCP% 9003 KB256\*.dcm
 
-ECHO Sending a single DICOM file from the KB512 folder...
-StoreSCU.exe -v -aet %AE% -aec %AE% %SCP% %PORT% KB512\*.dcm
-
-ECHO Sending a single DICOM file from the MB01 folder...
-StoreSCU.exe -v -aet %AE% -aec %AE% %SCP% %PORT% MB01\*.dcm
-
-ECHO All specified DICOM files have been sent for connectivity testing.
+ECHO Simple Connectivity Test Completed.
 PAUSE
+
