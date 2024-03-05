@@ -6,11 +6,8 @@ REM connection is handled independently, enhancing the
 REM service's capability to manage multiple simultaneous DICOM
 REM transfers efficiently.
 
-
-
 @ECHO OFF
 :: Disable command echoing to clean up script output.
-
 :: Start multiple instances of storescp.exe in minimized windows. Each instance is configured to ignore a specific port from 9000 to 9008.
 :: This might be used to avoid conflicts with other services or for testing purposes.
 start /min storescp.exe -aet STORESCP --ignore 9000 &
