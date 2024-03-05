@@ -10,7 +10,7 @@ This guide outlines an optimal progression for testing your DICOM server using t
 
 ### Single File Transfer Test
 - **Purpose**: Ensure the server can correctly receive and store individual DICOM files.
-- **Script**: Start with a simple transfer script, such as `StoreSCU-Folder-KB005.bat`, to send a small DICOM file.
+- **Script**: Start with a simple transfer script, such as `InitialStoreVerification.bat`, to send a sample DICOM file for each file size.
 
 ## 2. Single Size, Multiple Transfers
 
