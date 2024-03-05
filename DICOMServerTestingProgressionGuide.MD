@@ -6,7 +6,7 @@ This guide outlines an optimal progression for testing your DICOM server using t
 
 ### Echo Test
 - **Purpose**: Verify basic communication between your Service Class User (SCU) and Service Class Provider (SCP).
-- **Script**: Use an `echoscu.exe` script or similar to perform a DICOM Echo test.
+- **Script**: Use an `EchoTest.bat` script or similar to perform a DICOM Echo test.
 
 ### Single File Transfer Test
 - **Purpose**: Ensure the server can correctly receive and store individual DICOM files.
