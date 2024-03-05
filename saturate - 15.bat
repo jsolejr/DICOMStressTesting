@@ -19,31 +19,6 @@ SET IMGSZ=KB128
 :: After each command execution, the script sleeps for 2 seconds before starting the next command
 :: This block is repeated 10 times
 
-START "LOADER" /MIN StoreSCU.exe -v --repeat 1000000 +IP 1 +IS 2 +IR 2000 -xi -aet STORESCU -aec %AE% %SCP% %PORT% %IMGSZ%\*
-SLEEP 2
-:: Repeat the command
-START "LOADER" /MIN StoreSCU.exe -v --repeat 1000000 +IP 1 +IS 2 +IR 2000 -xi -aet STORESCU -aec %AE% %SCP% %PORT% %IMGSZ%\*
-SLEEP 2
-:: Repeat the command
-START "LOADER" /MIN StoreSCU.exe -v --repeat 1000000 +IP 1 +IS 2 +IR 2000 -xi -aet STORESCU -aec %AE% %SCP% %PORT% %IMGSZ%\*
-SLEEP 2
-:: Repeat the command
-START "LOADER" /MIN StoreSCU.exe -v --repeat 1000000 +IP 1 +IS 2 +IR 2000 -xi -aet STORESCU -aec %AE% %SCP% %PORT% %IMGSZ%\*
-SLEEP 2
-:: Repeat the command
-START "LOADER" /MIN StoreSCU.exe -v --repeat 1000000 +IP 1 +IS 2 +IR 2000 -xi -aet STORESCU -aec %AE% %SCP% %PORT% %IMGSZ%\*
-SLEEP 2
-:: Repeat the command
-START "LOADER" /MIN StoreSCU.exe -v --repeat 1000000 +IP 1 +IS 2 +IR 2000 -xi -aet STORESCU -aec %AE% %SCP% %PORT% %IMGSZ%\*
-SLEEP 2
-:: Repeat the command
-START "LOADER" /MIN StoreSCU.exe -v --repeat 1000000 +IP 1 +IS 2 +IR 2000 -xi -aet STORESCU -aec %AE% %SCP% %PORT% %IMGSZ%\*
-SLEEP 2
-:: Repeat the command
-START "LOADER" /MIN StoreSCU.exe -v --repeat 1000000 +IP 1 +IS 2 +IR 2000 -xi -aet STORESCU -aec %AE% %SCP% %PORT% %IMGSZ%\*
-SLEEP 2
-:: Repeat the command
-START "LOADER" /MIN StoreSCU.exe -v --repeat 1000000 +IP 1 +IS 2 +IR 2000 -xi -aet STORESCU -aec %AE% %SCP% %PORT% %IMGSZ%\*
-SLEEP 2
-:: Repeat the command
-START "LOADER" /MIN StoreSCU.exe -v --repeat 1000000 +IP 1 +IS 2 +IR 2000 -xi -aet STORESCU -aec %AE% %SCP% %PORT% %IMGSZ%\*
+FOR /L %%i IN (1,1,15) DO (
+    START "LOADER" /MIN StoreSCU.exe -v --repeat 100000 +IP 1 +IS 2 +IR 10000 -xi -aet STORESCU -aec %AE% %SCP% %PORT% %IMGSZ%\*
+    SLEEP 5
