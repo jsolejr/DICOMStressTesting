@@ -28,9 +28,9 @@ def ping_and_echo():
     scp = scp_entry.get()
     port = port_entry.get()
 
-    # Define the path to echoscu.exe based on the current script directory
+    # Define the path to echoscu.exe based on the current script directory and the new location
     script_dir = os.path.dirname(os.path.abspath(__file__))  # Gets the directory where the script is located
-    echoscu_exe = os.path.join(script_dir, 'echoscu.exe')  # Assumes echoscu.exe is in the same directory
+    echoscu_exe = os.path.join(script_dir, 'TestScripts', 'echoscu.exe')  # Update the path to the new location
 
       # Ping test
     response = subprocess.run(["ping", scp, "-n", "1"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)

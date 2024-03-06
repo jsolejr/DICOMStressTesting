@@ -1,8 +1,8 @@
 @ECHO OFF
 :: Disable echoing to maintain a clean command line interface.
 
-CALL Config.bat
-:: Execute Config.bat to load necessary configurations and environment variables.
+:: Load configuration settings from the Config.bat file, which sets up necessary environment variables.
+    CALL \Config\Config.bat
 
 SET OUT=%~n0-output.txt
 :: Define the output file name using this script's name for consistency.

@@ -1,5 +1,7 @@
 @ECHO OFF
-CALL Config.bat
+
+:: Load configuration settings from the Config.bat file, which sets up necessary environment variables.
+    CALL \Config\Config.bat
 
 ECHO Simple Connectivity Test Starting...
 REM The following commands send one DICOM file from each specified folder to the corresponding SCP instance.

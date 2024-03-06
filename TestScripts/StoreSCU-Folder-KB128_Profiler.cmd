@@ -7,8 +7,9 @@ REM The execution time is calculated and displayed at the end, providing insight
 REM the performance and efficiency of the DICOM transfer process.
 
 @ECHO OFF
-REM Load configuration settings
-CALL Config.bat
+
+:: Load configuration settings from the Config.bat file, which sets up necessary environment variables.
+    CALL \Config\Config.bat
 
 REM Set a variable for the output log file, naming it after this script
 SET OUT=%~n0-output.txt

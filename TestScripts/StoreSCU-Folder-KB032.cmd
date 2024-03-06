@@ -1,8 +1,8 @@
 @ECHO OFF
 REM Disable echoing to keep the output window clean.
 
-REM Load configuration settings from Config.bat, which sets up environment variables like AE titles and SCP details.
-CALL Config.bat
+:: Load configuration settings from the Config.bat file, which sets up necessary environment variables.
+    CALL \Config\Config.bat
 
 REM Set a variable to name the output log file based on this script's name.
 SET OUT=%~n0-output.txt

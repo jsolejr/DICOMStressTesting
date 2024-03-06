@@ -1,5 +1,7 @@
 @ECHO OFF
-CALL Config.bat
+
+:: Load configuration settings from the Config.bat file, which sets up necessary environment variables.
+    CALL \Config\Config.bat
 
 ECHO Performing Echo Test...
 echoscu.exe -aet ImTheSCU -aec %AE% %SCP% %PORT%

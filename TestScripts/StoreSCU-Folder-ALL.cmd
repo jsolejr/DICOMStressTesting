@@ -1,9 +1,9 @@
 @ECHO OFF
 :: This line turns off the display of commands in the command prompt
 
-CALL Config.bat
-:: This line calls another batch file named Config.bat. This is typically used to set up environment variables or configurations that will be used later in the script.
-
+:: Load configuration settings from the Config.bat file, which sets up necessary environment variables.
+    CALL \Config\Config.bat
+    
 SET OUT=%~n0-output.txt
 :: This line sets an environment variable OUT to the name of the script file with "-output.txt" appended to it.
 

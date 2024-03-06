@@ -1,8 +1,8 @@
 @ECHO OFF
 REM Disable echoing to keep the output clean.
 
-REM Load configuration settings from Config.bat, which includes AE titles and network settings.
-CALL Config.bat
+:: Load configuration settings from the Config.bat file, which sets up necessary environment variables.
+    CALL \Config\Config.bat
 
 REM Define an output log file named after this script.
 SET OUT=%~n0-output.txt
