@@ -1,5 +1,6 @@
 import tkinter as tk
 from subprocess import Popen
+import os
 
 # Function to run the saturation test batch files
 def run_saturation_test(batch_file):
@@ -22,6 +23,13 @@ button_config = {
     'padx': 20,
     'pady': 10
 }
+
+# Function to run the saturation test batch files
+def run_saturation_test(batch_file):
+    # Define the path to the TestScripts folder based on the current script directory
+    script_dir = os.path.dirname(os.path.abspath(__file__))  # Gets the directory where the script is located
+    batch_file_path = os.path.join(script_dir, 'TestScripts', batch_file)  # Adds the TestScripts folder to the path
+    Popen(['start', 'cmd', '/c', batch_file_path], shell=True)
 
 # Buttons to launch saturation tests
 buttons = [
