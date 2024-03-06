@@ -1,18 +1,26 @@
 @ECHO OFF
-:: Disable command echoing for cleaner output.
+:: Disable echoing of commands to keep the output clean.
+
+:: Get the directory of the current batch file
+SET "BATCH_DIR=%~dp0"
+
+:: Change directory to the batch file directory to ensure relative paths work
+CD /D "%BATCH_DIR%"
 
 :: Load configuration settings from the Config.bat file, which sets up necessary environment variables.
-    CALL \Config\Config.bat
+CALL ..\Config\Config.bat
 
+:: Define a variable to name the output log file based on the name of this script.
 SET OUT=%~n0-output.txt
-:: Set a variable 'OUT' to store the output log file name, using the script's name for reference.
 
+:: Specify the size of DICOM images that will be used in the StoreSCU command. Overwrites the config.bat value. Ensure this matches the folder name containing the images.
 SET IMGSZ=KB128
-:: Define the size (or type) of DICOM images that the StoreSCU command will process, corresponding to the folder name.
+
+:: Update the path to the Images folder according to the new directory structure
+SET IMAGE_PATH=%BATCH_DIR%..\Images\%IMGSZ%
 
 :: Below commands execute StoreSCU to send DICOM files, repeated for a set number of times with specific parameters.
 :: Each execution is followed by a 2-second pause to manage the load on the receiving SCP.
-
 :: Start the StoreSCU command in a minimized window titled "LOADER", iterating the send process 1,000,000 times.
 :: +IP 1: Generate a new patient ID for every study sent, useful for testing with unique patient data.
 :: +IS 2: Generate a new study UID after every 2 series sent, simulating multiple studies.
@@ -24,7 +32,7 @@ SET IMGSZ=KB128
 :: %IMGSZ%\*: Send all files within the specified directory, matching the set image size/type.
 
 FOR /L %%G IN (1,1,20) DO (
-    START "LOADER" /MIN StoreSCU.exe -v --repeat 1000000 +IP 1 +IS 2 +IR 2000 -xi -aet STORESCU -aec %AE% %SCP% %PORT% %IMGSZ%\*
+    START "LOADER" /MIN StoreSCU.exe -v --repeat 1000000 +IP 1 +IS 2 +IR 2000 -xi -aet STORESCU -aec %AE% %SCP% %PORT% "%IMAGE_PATH%\*"
     SLEEP 2
 )
 

@@ -1,10 +1,16 @@
 @ECHO OFF
-REM Disable echoing to keep the output clean.
+REM Disable echoing to keep the output window clean.
+
+:: Store the current directory to return back to it later
+SET "CURRENT_DIR=%CD%"
+
+:: Navigate to the script's own directory
+CD /D "%~dp0"
 
 :: Load configuration settings from the Config.bat file, which sets up necessary environment variables.
-    CALL \Config\Config.bat
+CALL ..\Config\Config.bat
 
-REM Define an output log file named after this script.
+REM Set a variable to name the output log file based on this script's name.
 SET OUT=%~n0-output.txt
 
 REM Execute the StoreSCU command to send DICOM files with specific transfer syntax proposals.

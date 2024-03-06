@@ -1,10 +1,11 @@
 import tkinter as tk
-from subprocess import Popen
+import subprocess
 import os
+from tkinter import messagebox
 
-# Function to run the saturation test batch files
-def run_saturation_test(batch_file):
-    Popen(['start', 'cmd', '/c', batch_file], shell=True)
+# Assuming SaturationTest.py is in the root folder
+root_dir = os.path.dirname(os.path.abspath(__file__))
+test_scripts_dir = os.path.join(root_dir, 'TestScripts')
 
 # Create the saturation test dialog window with the specified color scheme
 saturation_test_dialog = tk.Tk()
@@ -29,7 +30,7 @@ def run_saturation_test(batch_file):
     # Define the path to the TestScripts folder based on the current script directory
     script_dir = os.path.dirname(os.path.abspath(__file__))  # Gets the directory where the script is located
     batch_file_path = os.path.join(script_dir, 'TestScripts', batch_file)  # Adds the TestScripts folder to the path
-    Popen(['start', 'cmd', '/c', batch_file_path], shell=True)
+    subprocess.Popen(['cmd', '/c', batch_file_path], shell=True)
 
 # Buttons to launch saturation tests
 buttons = [

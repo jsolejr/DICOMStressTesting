@@ -1,14 +1,23 @@
-:: Turn off the command echo
 @ECHO OFF
+:: Disable echoing of commands to keep the output clean.
+
+:: Get the directory of the current batch file
+SET "BATCH_DIR=%~dp0"
+
+:: Change directory to the batch file directory to ensure relative paths work
+CD /D "%BATCH_DIR%"
 
 :: Load configuration settings from the Config.bat file, which sets up necessary environment variables.
-    CALL \Config\Config.bat
+CALL ..\Config\Config.bat
 
-:: Set the output file name based on the name of the current script
+:: Define a variable to name the output log file based on the name of this script.
 SET OUT=%~n0-output.txt
 
-:: Set the image size to be used in the StoreSCU command.  This should match the value of the folder name containing the image you want to test with.
+:: Specify the size of DICOM images that will be used in the StoreSCU command. Overwrites the config.bat value. Ensure this matches the folder name containing the images.
 SET IMGSZ=KB128
+
+:: Update the path to the Images folder according to the new directory structure
+SET IMAGE_PATH=%BATCH_DIR%..\Images\%IMGSZ%
 
 :: The following block of code starts the StoreSCU command in a minimized window titled "LOADER"
 :: The command is repeated 1,000,000 times
@@ -20,5 +29,5 @@ SET IMGSZ=KB128
 :: This block is repeated 10 times
 
 FOR /L %%i IN (1,1,15) DO (
-    START "LOADER" /MIN StoreSCU.exe -v --repeat 100000 +IP 1 +IS 2 +IR 10000 -xi -aet STORESCU -aec %AE% %SCP% %PORT% %IMGSZ%\*
+    START "LOADER" /MIN StoreSCU.exe -v --repeat 100000 +IP 1 +IS 2 +IR 10000 -xi -aet STORESCU -aec %AE% %SCP% %PORT% "%IMAGE_PATH%\*"
     SLEEP 5

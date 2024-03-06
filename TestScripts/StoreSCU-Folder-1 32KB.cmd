@@ -1,8 +1,14 @@
 @ECHO OFF
 REM Disable echoing to keep the output window clean.
 
+:: Store the current directory to return back to it later
+SET "CURRENT_DIR=%CD%"
+
+:: Navigate to the script's own directory
+CD /D "%~dp0"
+
 :: Load configuration settings from the Config.bat file, which sets up necessary environment variables.
-    CALL \Config\Config.bat
+CALL ..\Config\Config.bat
 
 REM Set a variable to name the output log file based on this script's name.
 SET OUT=%~n0-output.txt
@@ -18,13 +24,16 @@ REM -aet STORESCU: Defines the Application Entity Title of the Store SCU, identi
 REM -aec %AE%: Specifies the Application Entity Title of the SCP (Service Class Provider), as configured in Config.bat, indicating the target SCP for the image transfer.
 REM %SCP% %PORT%: Directs the DICOM images to the SCP's address and port, as specified in Config.bat, establishing the network destination for the transfers.
 REM KB032\*: Specifies the directory path containing the DICOM files to be sent, in this case, files from the KB032 directory.
-START "LOADER" /MIN StoreSCU.exe -v --repeat 1000 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% KB032\*
+START "LOADER" /MIN StoreSCU.exe -v --repeat 1000 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% ..\Images\KB032\*
 SLEEP 5
-START "LOADER" /MIN StoreSCU.exe -v --repeat 1000 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% KB032\*
+START "LOADER" /MIN StoreSCU.exe -v --repeat 1000 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% ..\Images\KB032\*
 SLEEP 5
-START "LOADER" /MIN StoreSCU.exe -v --repeat 1000 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% KB032\*
+START "LOADER" /MIN StoreSCU.exe -v --repeat 1000 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% ..\Images\KB032\*
 SLEEP 5
-START "LOADER" /MIN StoreSCU.exe -v --repeat 1000 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% KB032\*
+START "LOADER" /MIN StoreSCU.exe -v --repeat 1000 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% ..\Images\KB032\*
+
+:: Return to the original directory
+CD /D "%CURRENT_DIR%"
 
 :Exit
 REM Mark the end of the script's main operations.

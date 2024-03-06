@@ -7,11 +7,18 @@ REM The execution time is calculated and displayed at the end, providing insight
 REM the performance and efficiency of the DICOM transfer process.
 
 @ECHO OFF
+REM Disable echoing to keep the output window clean.
+
+:: Store the current directory to return back to it later
+SET "CURRENT_DIR=%CD%"
+
+:: Navigate to the script's own directory
+CD /D "%~dp0"
 
 :: Load configuration settings from the Config.bat file, which sets up necessary environment variables.
-    CALL \Config\Config.bat
+CALL ..\Config\Config.bat
 
-REM Set a variable for the output log file, naming it after this script
+REM Set a variable to name the output log file based on this script's name.
 SET OUT=%~n0-output.txt
 
 REM Capture the start time in components
@@ -41,7 +48,7 @@ REM -aet STORESCU: Specifies the Application Entity Title of this SCU, identifyi
 REM -aec %AE%: Defines the Application Entity Title for the receiving SCP, which is set in the Config.bat file.
 REM %SCP% %PORT%: Specifies the IP address and port number of the SCP, directing where the DICOM files should be sent, as configured in Config.bat.
 REM KB128\*: Indicates that DICOM files from the KB128 directory are to be sent, suggesting these files are approximately 128 kilobytes in size.
-StoreSCU.exe -v --repeat 100 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% KB128\*
+StoreSCU.exe -v --repeat 100 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% ..\Images\KB128\*
 
 
 REM Capture the end time in components
@@ -76,5 +83,8 @@ REM Display the total execution time
 echo Total Time: %DiffHrs%:%DiffMin%:%DiffSec%.%DiffMS%
 
 :Exit
-REM Pause the script to review the output before closing
+REM Echo a closing statement and also redirect to the output file.
+ECHO Execution completed. >> "%OUT%"
+
+REM Pause the script to review the output before closing.
 PAUSE

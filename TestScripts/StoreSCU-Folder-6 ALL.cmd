@@ -1,17 +1,17 @@
 @ECHO OFF
-:: This line turns off the display of commands in the command prompt
+REM Disable echoing to keep the output window clean.
+
+:: Store the current directory to return back to it later
+SET "CURRENT_DIR=%CD%"
+
+:: Navigate to the script's own directory
+CD /D "%~dp0"
 
 :: Load configuration settings from the Config.bat file, which sets up necessary environment variables.
-    CALL \Config\Config.bat
-    
+CALL ..\Config\Config.bat
+
+REM Set a variable to name the output log file based on this script's name.
 SET OUT=%~n0-output.txt
-:: This line sets an environment variable OUT to the name of the script file with "-output.txt" appended to it.
-
-%~d0
-:: This line changes the current drive to the drive where the script is located.
-
-CD %~dp0
-:: This line changes the current directory to the directory where the script is located.
 
 GOTO :SKIP
 :: This line skips the following commands and jumps to the label :SKIP.
@@ -20,19 +20,17 @@ GOTO :SKIP
 :: Each command sends files from a different directory, corresponding to different file sizes or categories.
 
 :: Sending DICOM files from the KB032 directory with implicit VR little endian transfer syntax.
-StoreSCU.exe -v -xi -aet STORESCU -aec %AE% %SCP% %PORT% KB032\*
+StoreSCU.exe -v -xi -aet STORESCU -aec %AE% %SCP% %PORT% ..\Images\KB032\*
 
 :: Sending DICOM files from the KB128 directory with implicit VR little endian transfer syntax.
-StoreSCU.exe -v -xi -aet STORESCU -aec %AE% %SCP% %PORT% KB128\*
+StoreSCU.exe -v -xi -aet STORESCU -aec %AE% %SCP% %PORT% ..\Images\KB128\*
 
 :: Sending DICOM files from the KB512 directory with implicit VR little endian transfer syntax.
-StoreSCU.exe -v -xi -aet STORESCU -aec %AE% %SCP% %PORT% KB512\*
+StoreSCU.exe -v -xi -aet STORESCU -aec %AE% %SCP% %PORT% ..\Images\KB512\*
 
 :: Sending DICOM files from the MB04 directory with implicit VR little endian transfer syntax.
-StoreSCU.exe -v -xi -aet STORESCU -aec %AE% %SCP% %PORT% MB04\*
+StoreSCU.exe -v -xi -aet STORESCU -aec %AE% %SCP% %PORT% ..\Images\MB01\*
 
-:: Sending DICOM files from the MB1 directory with implicit VR little endian transfer syntax.
-StoreSCU.exe -v -xi -aet STORESCU -aec %AE% %SCP% %PORT% MB1\*
 
 :: The following commands are commented out and can be enabled as needed by removing the leading "::".
 :: Sending DICOM files from the MB20 directory with implicit VR little endian transfer syntax.
@@ -41,17 +39,16 @@ StoreSCU.exe -v -xi -aet STORESCU -aec %AE% %SCP% %PORT% MB1\*
 :: Sending DICOM files from the MB60 directory with implicit VR little endian transfer syntax.
 ::StoreSCU.exe -v -xi -aet STORESCU -aec %AE% %SCP% %PORT% MB60\*
 
-
 :SKIP
-START "LOADER" /MIN StoreSCU.exe -v --repeat 4000 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% KB032\*
+START "LOADER"  StoreSCU.exe -v --repeat 200 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% ..\Images\KB032\*
 SLEEP 5
-START "LOADER" /MIN StoreSCU.exe -v --repeat 4000 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% KB128\*
+START "LOADER"  StoreSCU.exe -v --repeat 200 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% ..\Images\KB128\*
 SLEEP 5
-START "LOADER" /MIN StoreSCU.exe -v --repeat 4000 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% KB256\*
+START "LOADER"  StoreSCU.exe -v --repeat 200 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% ..\Images\KB256\*
 SLEEP 5
-START "LOADER" /MIN StoreSCU.exe -v --repeat 1000 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% MBKB512\*
+START "LOADER"  StoreSCU.exe -v --repeat 200 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% ..\Images\KB512\*
 SLEEP 5
-START "LOADER" /MIN StoreSCU.exe -v --repeat 400 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% MB01\*
+START "LOADER"  StoreSCU.exe -v --repeat 200 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% ..\Images\MB01\*
 :: Do not have files for following sizes
 ::SLEEP 5
 ::START "LOADER" /MIN StoreSCU.exe -v --repeat 200 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% MB20\*
