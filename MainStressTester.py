@@ -5,9 +5,6 @@ from subprocess import Popen
 def open_stress_test_config():
     Popen(['python', 'StressTestConfig.py'])
 
-def open_saturation_test():
-    Popen(['python', 'SaturationTest.py'])
-
 def close_app():
     root.destroy()
 
@@ -38,12 +35,14 @@ test_config_button.pack(side=tk.LEFT, padx=10)
 saturation_test_button = tk.Button(frame, text="Saturation Testing", command=open_saturation_test, **button_config)
 saturation_test_button.pack(side=tk.LEFT, padx=10)
 
-# Additional buttons can be added here using the same pattern
-# ...
+
+# Test 2 Button
+test2_button = tk.Button(frame, text="Test 2", **button_config)
+test2_button.pack(side=tk.LEFT, padx=10)
 
 # Close Button
 close_button = tk.Button(frame, text="Close", command=close_app, **button_config)
 close_button.pack(side=tk.LEFT, padx=10)
 
-# Start the GUI event loop
+# Run the application
 root.mainloop()
