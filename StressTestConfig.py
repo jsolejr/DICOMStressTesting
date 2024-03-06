@@ -1,9 +1,11 @@
 import tkinter as tk
 from tkinter import messagebox
+import subprocess
+import os
 
 # Function to load current settings from Config.bat
 def load_config():
-    with open('Config.bat', 'r') as file:
+    with open('Config/Config.bat', 'r') as file:
         lines = file.readlines()
     
     current_settings = {}
@@ -13,6 +15,44 @@ def load_config():
             current_settings[key] = value
             
     return current_settings
+
+#Define function to close app
+def close_application():
+    root.destroy()  # This will close the application
+
+
+
+# Function to perform a ping and DICOM echo
+def ping_and_echo():
+    ae = ae_entry.get()
+    scp = scp_entry.get()
+    port = port_entry.get()
+
+    # Define the path to echoscu.exe based on the current script directory
+    script_dir = os.path.dirname(os.path.abspath(__file__))  # Gets the directory where the script is located
+    echoscu_exe = os.path.join(script_dir, 'echoscu.exe')  # Assumes echoscu.exe is in the same directory
+
+      # Ping test
+    response = subprocess.run(["ping", scp, "-n", "1"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    ping_result = response.stdout + response.stderr
+    if response.returncode == 0:
+        messagebox.showinfo("Ping Test", "Ping successful!\n" + ping_result)
+    else:
+        messagebox.showerror("Ping Test", "Ping failed.\n" + ping_result)
+        return
+
+    # Perform a DICOM echo test
+    echoscu_command = [echoscu_exe, '-aec', ae, scp, port]
+    echo_response = subprocess.run(echoscu_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    
+    # Prepare a message with the parameters used for the echo test
+    parameters_info = f"AETitle: {ae}\nSCP Address: {scp}\nPort: {port}"
+    if echo_response.returncode == 0:
+        messagebox.showinfo("DICOM Echo Test", f"C-ECHO successful!\nParameters:\n{parameters_info}")
+    else:
+        messagebox.showerror("DICOM Echo Test", f"C-ECHO failed.\n{echo_response.stderr}\nParameters:\n{parameters_info}")
+
+
 
 # Function to save the configurations to Config.bat
 def save_config():
@@ -34,10 +74,10 @@ def save_config():
         f"SET CCNTS={ccnts}\n"
     ]
     
-    with open('Config.bat', 'w') as file:
+    with open('Config/Config.bat', 'w') as file:
         file.writelines(config_lines)
     messagebox.showinfo("Success", "Configuration saved successfully!")
-    root.destroy()
+    # root.destroy() Uncomment this line if you want the entire dialouge box to shut down.
 
 # Creating the main window
 root = tk.Tk()
@@ -90,8 +130,24 @@ ccnts_entry = tk.Entry(frame, **entry_config)
 ccnts_entry.grid(row=10, column=1)
 ccnts_entry.insert(0, current_settings.get('CCNTS', ''))
 
+
+
+# Create a button for PING and DICOM Echo 
+ping_echo_button = tk.Button(frame, text="Ping and DICOM Echo", command=ping_and_echo, **button_config)
+ping_echo_button.grid(row=11, column=0, sticky='ew')  # Set the column to 1 and make it stick to east and west
+
 # Save button
 save_button = tk.Button(frame, text="Save Config", command=save_config, **button_config)
-save_button.grid(row=11, column=1)
+save_button.grid(row=11, column=1, sticky='ew')  # Set the column to 0 and make it stick to east and west
+
+# Close button
+close_button = tk.Button(frame, text="Close", command=close_application, **button_config)
+close_button.grid(row=11, column=2, sticky='ew')  # Set the column to 2 and make it stick to east and west
+
+# Configure the columns within the frame to have the same weight
+# This makes them expand equally within the grid
+frame.grid_columnconfigure(0, weight=1)
+frame.grid_columnconfigure(1, weight=1)
+frame.grid_columnconfigure(2, weight=1)
 
 root.mainloop()

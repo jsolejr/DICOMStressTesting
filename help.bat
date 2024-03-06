@@ -1,3 +1,0 @@
-storescu --help
-
-PAUSE
