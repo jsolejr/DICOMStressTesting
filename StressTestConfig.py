@@ -5,15 +5,20 @@ import os
 
 # Function to load current settings from Config.bat
 def load_config():
-    with open('Config/Config.bat', 'r') as file:
-        lines = file.readlines()
-    
+    config_script_dir = os.path.dirname(os.path.abspath(__file__))
+    config_path = os.path.join(config_script_dir, 'Config', 'Config.bat')
     current_settings = {}
-    for line in lines:
-        if line.startswith('SET'):
-            key, value = line[4:].strip().split('=')
-            current_settings[key] = value
-            
+    try:
+        with open(config_path, 'r') as file:
+            lines = file.readlines()
+        for line in lines:
+            if line.startswith('SET'):
+                key, value = line[4:].strip().split('=')
+                current_settings[key.strip()] = value.strip()
+    except FileNotFoundError:
+        messagebox.showerror("Error", "The config.bat file does not exist.")
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred: {e}")
     return current_settings
 
 #Define function to close app
@@ -62,22 +67,36 @@ def save_config():
     imgsz = image_size_var.get()
     ccnts = ccnts_entry.get()
 
-    config_lines = [
-        "REM --Put your Connection information here -- \n",
-        f"SET AE={ae}\n",
-        f"SET SCP={scp}\n",
-        f"SET PORT={port}\n",
-        "\nREM --Specify your image size to test with --\n",
-        "REM --Valid values: KB005,KB032,KB128,KB256,KB512,MB01 --\n",
-        f"SET IMGSZ={imgsz}\n",
-        "\nREM --Specify the Number of concurrent connections to open--\n",
-        f"SET CCNTS={ccnts}\n"
-    ]
-    
-    with open('Config/Config.bat', 'w') as file:
-        file.writelines(config_lines)
-    messagebox.showinfo("Success", "Configuration saved successfully!")
-    # root.destroy() Uncomment this line if you want the entire dialouge box to shut down.
+    config_script_dir = os.path.dirname(os.path.abspath(__file__))
+    config_path = os.path.join(config_script_dir, 'Config', 'Config.bat')
+
+    # Prepare the lines to write back
+    new_config_lines = {
+        'AE': ae,
+        'SCP': scp,
+        'PORT': port,
+        'IMGSZ': imgsz,
+        'CCNTS': ccnts
+    }
+
+    try:
+        with open(config_path, 'r') as file:
+            lines = file.readlines()
+
+        with open(config_path, 'w') as file:
+            for line in lines:
+                if line.startswith('SET'):
+                    key = line[4:].strip().split('=')[0]
+                    if key in new_config_lines:
+                        line = f"SET {key}={new_config_lines[key]}\n"
+                file.write(line)
+
+        messagebox.showinfo("Success", "Configuration saved successfully!")
+    except FileNotFoundError:
+        messagebox.showerror("Error", "The config.bat file does not exist.")
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred: {e}")
+
 
 # Creating the main window
 root = tk.Tk()
