@@ -30,7 +30,7 @@ REM The DICOM files are sourced from the directory indicated by %IMGSZ%.
 
 :: Transmitting files with a 5-second pause between each batch to manage load on the SCP.
 FOR /L %%i IN (1,1,10) DO (
-    START "LOADER" /MIN StoreSCU.exe -v --repeat 100000 +IP 1 +IS 2 +IR 10000 -xi -aet STORESCU -aec %AE% %SCP% %PORT% "%IMAGE_PATH%\*"
+    START "LOADER" StoreSCU.exe -v --repeat 500000 +IP 1 +IS 2 +IR 10000 -xi -aet STORESCU -aec %AE% %SCP% %PORT% "%IMAGE_PATH%\*"
     SLEEP 5
 )
 

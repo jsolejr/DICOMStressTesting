@@ -28,7 +28,7 @@ SET IMAGE_PATH=%BATCH_DIR%..\Images\%IMGSZ%
 :: The '%IMGSZ%\' part specifies the directory containing the DICOM files to be sent.
 :: Repeat the sending process four more times to ensure thorough testing, with a brief pause between each to prevent overloading the server.
 FOR /L %%i IN (1,1,5) DO (
-    START "LOADER" "%BATCH_DIR%StoreSCU.exe" -v --repeat 1000000 +IP 1 +IS 2 +IR 2000 -xi -aet STORESCU -aec %AE% %SCP% %PORT% "%IMAGE_PATH%\*"
+    START "LOADER" "%BATCH_DIR%StoreSCU.exe" -v --repeat 500000 +IP 1 +IS 2 +IR 2000 -xi -aet STORESCU -aec %AE% %SCP% %PORT% "%IMAGE_PATH%\*"
     SLEEP 2
 )
 

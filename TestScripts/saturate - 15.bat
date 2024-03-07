@@ -29,5 +29,5 @@ SET IMAGE_PATH=%BATCH_DIR%..\Images\%IMGSZ%
 :: This block is repeated 10 times
 
 FOR /L %%i IN (1,1,15) DO (
-    START "LOADER" /MIN StoreSCU.exe -v --repeat 100000 +IP 1 +IS 2 +IR 10000 -xi -aet STORESCU -aec %AE% %SCP% %PORT% "%IMAGE_PATH%\*"
+    START "LOADER" StoreSCU.exe -v --repeat 500000 +IP 1 +IS 2 +IR 10000 -xi -aet STORESCU -aec %AE% %SCP% %PORT% "%IMAGE_PATH%\*"
     SLEEP 5

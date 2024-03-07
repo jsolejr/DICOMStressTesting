@@ -35,7 +35,7 @@ SET IMAGE_PATH=%BATCH_DIR%..\Images\%IMGSZ%
 :: %IMGSZ%\*: Send all files in the specified directory.
 
 FOR /L %%G IN (1,1,5) DO (
-    START "LOADER" /MIN StoreSCU.exe -v --repeat 100000 +IP 1 +IS 2 +IR 5000 -xi -aet STORESCU -aec %AE% %SCP% %PORT% "%IMAGE_PATH%\*"
+    START "LOADER" StoreSCU.exe -v --repeat 500000 +IP 1 +IS 2 +IR 5000 -xi -aet STORESCU -aec %AE% %SCP% %PORT% "%IMAGE_PATH%\*"
     SLEEP 5
 )
 
