@@ -4,6 +4,9 @@ from tkinter import messagebox
 import subprocess
 import os
 
+# Initialize the dictionary that will hold the entry widgets
+entry_widgets = {}
+
 # Function to load current settings from Config.bat
 def load_config():
     config_script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -19,20 +22,18 @@ def load_config():
     except FileNotFoundError:
         messagebox.showerror("Error", "The config.bat file does not exist.")
     except Exception as e:
-        messagebox.showerror("Error", f"An error occurred: {e}")
+        messagebox.showerror("Error", str(e))
     return current_settings
 
 # Function to perform a ping and DICOM echo
 def ping_and_echo():
-    ae = ae_entry.get()
-    scp = scp_entry.get()
-    port = port_entry.get()
+    ae = entry_widgets['AE'].get()
+    scp = entry_widgets['SCP'].get()
+    port = entry_widgets['PORT'].get()
 
-    # Define the path to echoscu.exe based on the current script directory and the new location
-    script_dir = os.path.dirname(os.path.abspath(__file__))  # Gets the directory where the script is located
-    echoscu_exe = os.path.join(script_dir, 'TestScripts', 'echoscu.exe')  # Update the path to the new location
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    echoscu_exe = os.path.join(script_dir, 'TestScripts', 'echoscu.exe')
 
-        # Ping test
     response = subprocess.run(["ping", scp, "-n", "1"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     ping_result = response.stdout + response.stderr
     if response.returncode == 0:
@@ -41,31 +42,26 @@ def ping_and_echo():
         messagebox.showerror("Ping Test", "Ping failed.\n" + ping_result)
         return
     
-         # Perform a DICOM echo test
     echoscu_command = [echoscu_exe, '-aec', ae, scp, port]
     echo_response = subprocess.run(echoscu_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     
-    # Prepare a message with the parameters used for the echo test
     parameters_info = f"AETitle: {ae}\nSCP Address: {scp}\nPort: {port}"
     if echo_response.returncode == 0:
         messagebox.showinfo("DICOM Echo Test", f"C-ECHO successful!\nParameters:\n{parameters_info}")
     else:
         messagebox.showerror("DICOM Echo Test", f"C-ECHO failed.\n{echo_response.stderr}\nParameters:\n{parameters_info}")
 
-
-
 # Function to save the configurations to Config.bat
 def save_config():
-    ae = ae_entry.get()
-    scp = scp_entry.get()
-    port = port_entry.get()
+    ae = entry_widgets['AE'].get()
+    scp = entry_widgets['SCP'].get()
+    port = entry_widgets['PORT'].get()
     imgsz = image_size_var.get()
-    ccnts = ccnts_entry.get()
+    ccnts = entry_widgets['CCNTS'].get()
 
     config_script_dir = os.path.dirname(os.path.abspath(__file__))
     config_path = os.path.join(config_script_dir, 'Config', 'Config.bat')
 
-    # Prepare the lines to write back
     new_config_lines = {
         'AE': ae,
         'SCP': scp,
@@ -99,48 +95,52 @@ def close_application():
 # Creating the main window
 root = tk.Tk()
 root.title("DICOM Stress Testing - Configuration Editor")
-root.geometry("350x300")  # Set the initial size of the dialog box
-
-# More vivid blue color for the buttons
-vivid_blue = '#007FFF'
+root.geometry("400x400")  
 
 # Load current settings
 current_settings = load_config()
 
-# Creating a Frame for input fields
-frame = tk.Frame(root)
-frame.pack(padx=10, pady=10)
+# Styling for the labels and buttons
+label_style = {'bg': 'white', 'fg': 'black'}
+button_style = {'bg': '#007FFF', 'fg': 'white'}
 
-# AE Title Label and Entry
-tk.Label(frame, text="AE Title").grid(row=0, column=0, sticky='w')
-ae_entry = tk.Entry(frame)  # Define the ae_entry variable here
-ae_entry.grid(row=0, column=1)
-ae_entry.insert(0, current_settings.get('AE', ''))
+frame = tk.Frame(root, bg='white')
+frame.pack(padx=10, pady=10, expand=True)
 
-# SCP/IP Address Label and Entry
-tk.Label(frame, text="SCP/IP Address").grid(row=1, column=0, sticky='w')
-scp_entry = tk.Entry(frame)  # Define the scp_entry variable here
-scp_entry.grid(row=1, column=1)
-scp_entry.insert(0, current_settings.get('SCP', ''))
+# Entry labels and fields
+entries = {
+    "AE Title": 'AE',
+    "SCP/IP Address": 'SCP',
+    "Port": 'PORT',
+    "Concurrent Connections": 'CCNTS'
+}
 
-# Port Label and Entry
-tk.Label(frame, text="Port").grid(row=2, column=0, sticky='w')
-port_entry = tk.Entry(frame)  # Define the port_entry variable here
-port_entry.grid(row=2, column=1)
-port_entry.insert(0, current_settings.get('PORT', ''))
+row_counter = 0
+for text, key in entries.items():
+    tk.Label(frame, text=text, **label_style).grid(row=row_counter, column=0, sticky='w')
+    entry = tk.Entry(frame)
+    entry.grid(row=row_counter, column=1, sticky='ew')
+    entry.insert(0, current_settings.get(key, ''))
+    entry_widgets[key] = entry
+    row_counter += 1
 
-# Image Size Variable
-image_size_var = tk.StringVar(value=current_settings.get('IMGSZ', 'KB128'))  # Define image_size_var here
+# Image Size radio buttons
+tk.Label(frame, text="Image Size", **label_style).grid(row=row_counter, column=0, pady=(10, 0), sticky='w')
+image_size_var = tk.StringVar(value=current_settings.get('IMGSZ', 'KB128'))
+image_sizes = ["KB005", "KB032", "KB128", "KB256", "KB512", "MB01"]
+for size in image_sizes:
+    tk.Radiobutton(frame, text=size, variable=image_size_var, value=size, **label_style).grid(row=row_counter, column=1, sticky='w')
+    row_counter += 1
 
-# Concurrent Connections Entry
-tk.Label(frame, text="Concurrent Connections").grid(row=3, column=0, sticky='w')
-ccnts_entry = tk.Entry(frame)  # Define the ccnts_entry variable here
-ccnts_entry.grid(row=3, column=1)
-ccnts_entry.insert(0, current_settings.get('CCNTS', ''))
+# Action buttons
+actions = {
+    "Ping and DICOM Echo": ping_and_echo,
+    "Save Config": save_config,
+    "Close": close_application
+}
 
-# Example Buttons for actions
-tk.Button(frame, text="Ping and DICOM Echo", command=ping_and_echo, bg=vivid_blue, fg='white').grid(row=12, column=0, columnspan=2, pady=5, sticky='ew')
-tk.Button(frame, text="Save Config", command=save_config, bg=vivid_blue, fg='white').grid(row=13, column=0, pady=5, sticky='ew')
-tk.Button(frame, text="Close", command=close_application, bg=vivid_blue, fg='white').grid(row=13, column=1, pady=5, sticky='ew')
+for text, command in actions.items():
+    tk.Button(frame, text=text, command=command, **button_style).grid(row=row_counter, column=0, columnspan=2, pady=5, sticky='ew')
+    row_counter += 1
 
 root.mainloop()
