@@ -1,3 +1,4 @@
+REM StoreSCU-Folder-1 32KB.cmd
 @ECHO OFF
 REM Disable echoing to keep the output window clean.
 

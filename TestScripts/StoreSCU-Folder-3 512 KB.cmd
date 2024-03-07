@@ -1,3 +1,4 @@
+REM StoreSCU-Folder-3 512 KB.cmd
 @ECHO OFF
 REM Disable echoing to keep the output window clean.
 
@@ -24,7 +25,7 @@ REM -aet STORESCU: Defines the Application Entity Title of the Store SCU, identi
 REM -aec %AE%: Specifies the Application Entity Title of the SCP (Service Class Provider), as configured in Config.bat, indicating the target SCP for the image transfer.
 REM %SCP% %PORT%: Directs the StoreSCU to send images to the specified SCP's IP address and port number, as detailed in Config.bat, establishing the network destination for the transfers.
 REM KB256\*: Targets the directory containing the DICOM files to be sent, assumed here to be approximately 256 kilobytes in size, denoted by the 'KB256' directory.
-StoreSCU.exe -v --repeat 4000 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% ..\Images\KB256\*
+StoreSCU.exe -v --repeat 4000 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% ..\Images\KB512\*
 
 :Exit
 REM Label indicating the conclusion of the script's main operations.

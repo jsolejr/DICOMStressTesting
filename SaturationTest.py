@@ -1,3 +1,4 @@
+#SaturationTest.py
 import tkinter as tk
 import subprocess
 import os
@@ -7,44 +8,48 @@ from tkinter import messagebox
 root_dir = os.path.dirname(os.path.abspath(__file__))
 test_scripts_dir = os.path.join(root_dir, 'TestScripts')
 
-# Create the saturation test dialog window with the specified color scheme
-saturation_test_dialog = tk.Tk()
-saturation_test_dialog.title("Saturation Test")
-saturation_test_dialog.configure(bg='#024930')  # Dark green background
-
-# Frame for buttons with the same color as the main box
-button_frame = tk.Frame(saturation_test_dialog, bg='#024930')
-button_frame.pack(pady=50)
-
-# Button configuration with the specified colors
-button_config = {
-    'activebackground': '#af2324',
-    'bg': '#af2324',  # Dark red background
-    'fg': 'white',
-    'padx': 20,
-    'pady': 10
-}
-
 # Function to run the saturation test batch files
 def run_saturation_test(batch_file):
-    # Define the path to the TestScripts folder based on the current script directory
-    script_dir = os.path.dirname(os.path.abspath(__file__))  # Gets the directory where the script is located
-    batch_file_path = os.path.join(script_dir, 'TestScripts', batch_file)  # Adds the TestScripts folder to the path
-    subprocess.Popen(['cmd', '/c', batch_file_path], shell=True)
+    batch_file_path = os.path.join(test_scripts_dir, batch_file)  # Full path to the batch file
 
-# Buttons to launch saturation tests
-buttons = [
-    {"text": "Saturate - 5 Threads", "command": lambda: run_saturation_test('saturate - 5.bat')},
-    {"text": "Saturate - 10 Threads", "command": lambda: run_saturation_test('saturate-10.bat')},
-    {"text": "Saturate - 15 Threads", "command": lambda: run_saturation_test('saturate-15.bat')},
-    {"text": "Saturate - 20 Threads", "command": lambda: run_saturation_test('saturate-20.bat')}
-]
+    # Debugging: Print the path to verify it's correct
+    print(f"Attempting to run batch file at path: {batch_file_path}")
 
-for button in buttons:
-    tk.Button(button_frame, text=button["text"], command=button["command"], **button_config).pack(side=tk.LEFT, padx=10)
+    if not os.path.exists(batch_file_path):
+        messagebox.showerror("Error", f"Batch file not found: {batch_file_path}")
+        return  # Exit the function if the batch file does not exist
 
-# Close button
-tk.Button(button_frame, text="Close", command=saturation_test_dialog.destroy, **button_config).pack(side=tk.LEFT, padx=10)
+    # Execute the batch file within the TestScripts directory
+    subprocess.Popen(['cmd', '/c', batch_file_path], cwd=test_scripts_dir, shell=True)
 
-# Start the main loop
-saturation_test_dialog.mainloop()
+# Create the main dialog window, replicating the style and structure of Master.py
+def create_saturation_test_panel():
+    saturation_test_dialog = tk.Tk()
+    saturation_test_dialog.title("DICOM Saturation Tests")
+    saturation_test_dialog.geometry("350x300")  # Set the initial size of the dialog box
+
+    # Create the main frame, similar to Master.py
+    main_frame = tk.Frame(saturation_test_dialog)
+    main_frame.pack(fill='both', expand=True)
+
+    # More vivid blue color for the buttons
+    vivid_blue = '#007FFF'
+
+    # Buttons to launch saturation tests, using the structure from Master.py
+    buttons = [
+        {"text": "Saturate - 5 Threads", "command": lambda: run_saturation_test('saturate - 5.bat')},
+        {"text": "Saturate - 10 Threads", "command": lambda: run_saturation_test('saturate-10.bat')},
+        {"text": "Saturate - 15 Threads", "command": lambda: run_saturation_test('saturate-15.bat')},
+        {"text": "Saturate - 20 Threads", "command": lambda: run_saturation_test('saturate - 20.bat')}
+    ]
+
+    for button in buttons:
+        tk.Button(main_frame, text=button["text"], command=button["command"], bg=vivid_blue, fg='white').pack(pady=10)
+
+    # Close button to exit the application, matching the style from Master.py
+    tk.Button(main_frame, text="Exit", command=saturation_test_dialog.destroy, bg=vivid_blue, fg='white').pack(pady=10)
+
+    saturation_test_dialog.mainloop()
+
+if __name__ == "__main__":
+    create_saturation_test_panel()

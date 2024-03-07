@@ -42,8 +42,15 @@ while ((Get-Date) -lt $endTime) {
 
     # Iterate through the performance counters and collect the data
     foreach ($counter in $performanceCounters) {
-        $value = (Get-Counter -Counter $counter).CounterSamples.CookedValue | Measure-Object -Average | Select-Object -ExpandProperty Average
-        $result | Add-Member -MemberType NoteProperty -Name $counter -Value $value
+        try {
+            # Attempt to collect performance counter data
+            $value = (Get-Counter -Counter $counter).CounterSamples.CookedValue | Measure-Object -Average | Select-Object -ExpandProperty Average
+            $result | Add-Member -MemberType NoteProperty -Name $counter -Value $value
+        } catch {
+            # If an error occurs, handle it here
+            Write-Warning "Unable to read counter ${counter}: $_"
+        }
+     
     }
 
     # Add the result to the results array
@@ -52,6 +59,7 @@ while ((Get-Date) -lt $endTime) {
     # Wait for the specified interval before collecting the next set of data
     Start-Sleep -Seconds $interval
 }
+
 
 # Export the results to a CSV file
 $results | Export-Csv -Path $outputFilePath -NoTypeInformation
