@@ -25,7 +25,7 @@ REM -aet STORESCU: Specifies the Application Entity Title of the SCU (Service Cl
 REM -aec %AE%: Specifies the Application Entity Title of the SCP (Service Class Provider) as configured in Config.bat.
 REM %SCP% %PORT%: Directs the DICOM images to the SCP's address and port, as specified in Config.bat.
 REM KB128\*: Specifies the directory path containing the DICOM files to be sent, in this case, files from the KB128 directory.
-StoreSCU.exe -v --repeat 4000 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% ..\Images\KB128\*
+START "LOADER" StoreSCU.exe -v --repeat 1000 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% ..\Images\KB128\*
 
 :Exit
 REM Marks the end of the script's main operations.

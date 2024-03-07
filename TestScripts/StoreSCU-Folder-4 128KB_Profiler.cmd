@@ -18,7 +18,7 @@ SET "OUT=%~n0-output.txt"
 SET "START_TIME=%TIME%"
 
 REM Execute StoreSCU command to send DICOM files with specified parameters.
-StoreSCU.exe --repeat 100 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% ..\Images\KB128\* >> "%OUT%"
+START "LOADER" StoreSCU.exe -v --repeat 1000 +IP 1 +IS 2 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% ..\Images\KB128\* >> 
 
 :: Get the end timestamp
 SET "END_TIME=%TIME%"
