@@ -1,53 +1,48 @@
-# DICOM Server Testing Toolkit Overview
+# DICOM Stress Testing Toolkit Overview
 
-This document provides an overview and usage guide for a comprehensive **DICOM Server Testing Toolkit** designed to evaluate DICOM server performance under various conditions. The toolkit includes a collection of batch scripts and a structured folder setup containing DICOM files of specific sizes.
+Welcome to the DICOM Stress Testing Toolkit, a comprehensive suite designed to evaluate and ensure the robust performance of DICOM servers under various load conditions. This toolkit simulates real-world scenarios, providing insights into the server's capacity to handle different types and volumes of DICOM communications.
 
-## Folder Structure
+## Features
 
-The toolkit comprises several folders, each named according to the size of the DICOM file they contain, facilitating a wide range of tests:
+- **Configurable Test Environment:** Customize tests according to your specific server setup and requirements.
+- **Wide Range of Tests:** From basic connectivity and single file transfers to high-volume stress tests and endurance evaluations.
+- **Performance Analysis:** Detailed logs and performance metrics to analyze server behavior under stress.
+- **Modular Design:** Easy to extend and adapt for specific testing needs or to include new types of tests.
 
-- **Small File Sizes:** `KB005`, `KB032`, `KB128`
-- **Medium to Large File Sizes:** `KB256`, `KB512`, `MB01`
-- **Special Cases:** `TEST` - This folder's purpose is unspecified but may contain specific test cases or miscellaneous DICOM files.
+## Getting Started
 
-## Batch Scripts
+1. **Configure Your Environment:** Use `Config.bat` to set your DICOM server details and preferred testing parameters.
+2. **Select Your Tests:** Choose from a variety of predefined test scripts tailored for different testing scenarios.
+3. **Run Tests:** Execute the chosen test scripts and monitor your server's performance.
+4. **Analyze Results:** Review the generated logs and performance data to identify potential bottlenecks or issues.
 
-A variety of batch scripts are included, each tailored for specific testing purposes:
+## Toolkit Components
 
-### StoreSCU Scripts
-Scripts such as `StoreSCU-Folder-KB128.cmd` are designed to send DICOM images to a server, with names suggesting the intended image size. **Ensure the script's directory paths align with the intended test case.**
+### Batch Scripts
 
-### Configuration Script
-`Config.bat` initializes environment variables like the AE title, SCP's IP, and port number, ensuring a consistent testing environment across scripts.
+- **Echo Test:** Validates basic connectivity and communication between SCU and SCP.
+- **Transfer Tests:** Includes single file, fixed size repetitive, and varied size transfers to evaluate server handling and throughput.
+- **Concurrent Transfers:** Simulates real-world scenarios with simultaneous data transmissions.
+- **Stress Tests:** Puts the server under high demand to test its limits and endurance.
 
-### Utility Scripts
-- `Loader.bat` and `LOADER_PART10.bat` log and execute file transfers, supporting multiple concurrent connections.
-- `LoopMe.bat` offers a template for loop-based testing, allowing for repetitive command execution.
+### Configuration Files
 
-### Stress Testing Scripts
-`STRESS_TEST.bat` and similar scripts simulate high-load scenarios by sending DICOM images repeatedly, testing server endurance and capacity.
+- **`Config.bat`:** Central configuration script to set up your testing environment, including server details and test parameters.
 
-## Testing Scenarios
+### Test Folders
 
-The toolkit supports testing from basic functionality with small files to extensive stress testing with large files and high-frequency transfers, providing insights into server performance across a spectrum of conditions.
+- Organized by file size (`KB005`, `KB128`, `MB01`, etc.) to facilitate targeted testing scenarios.
 
-## Usage Guide
+## Customization and Extension
 
-1. **Configure** your testing environment using `Config.bat`, tailoring settings to your DICOM server.
-2. **Select Test Cases** appropriate for your testing goals, ensuring script paths correspond to the desired DICOM file sizes.
-3. **Execute Tests** using the chosen batch scripts, closely monitoring outputs and logs for performance metrics.
-4. **Analyze Results** to gauge server performance, identifying any potential bottlenecks or errors.
+The modular structure and clear documentation make it easy to add new tests or adapt existing ones to meet your unique requirements.
 
 ## Troubleshooting and Tips
 
-- Confirm server accessibility and correct configuration before testing.
-- Ensure alignment between script paths and intended DICOM file sizes.
-- Monitor system resources during extensive testing to avoid overloading.
+- Ensure server accessibility and proper configuration prior to testing.
+- Verify the alignment between script paths and intended test files.
+- Consider system resources and potential network constraints when planning extensive testing sessions.
 
-## Extending the Toolkit
+## Contributing
 
-The toolkit's modular structure allows for easy addition of new file sizes, test scenarios, or scripts, enabling customization to fit specific testing needs.
-
----
-
-This README aims to provide a clear understanding of the DICOM Server Testing Toolkit's functionality and application. For specialized testing requirements, consider adapting the scripts and configurations to better suit your testing environment.
+Your contributions are welcome! Whether it's adding new features, improving existing tests, or reporting issues, your input helps make this toolkit better for everyone.
