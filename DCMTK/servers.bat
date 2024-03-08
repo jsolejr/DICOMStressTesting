@@ -8,7 +8,7 @@ REM transfers efficiently.
 
 @ECHO OFF
 :: Disable command echoing to clean up script output.
-:: Start multiple instances of storescp.exe in minimized windows. Each instance is configured to ignore a specific port from 9000 to 9008.
+:: Start multiple instances of storescp.exe in minimized windows. Each instance runs on a separate port and ignores the DICOM images
 :: This might be used to avoid conflicts with other services or for testing purposes.
 start /min storescp.exe -aet STORESCP --ignore 9000 &
 start /min storescp.exe -aet STORESCP --ignore 9001 &
