@@ -1,4 +1,4 @@
-REM StoreSCU-Folder-6 ALL.cmd
+REM File Name - StoreSCU-Folder-6 ALL.cmd
 @ECHO OFF
 REM Disable echoing to keep the output window clean.
 
