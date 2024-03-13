@@ -14,20 +14,16 @@ CALL ..\Config\Config.bat
 SET OUT=%~n0-output.txt
 
 :: Specify the size of DICOM images that will be used in the StoreSCU command. Overwrites the config.bat value. Ensure this matches the folder name containing the images.
-SET IMGSZ=KB128
+:: Commented out to use the config.bat setting
+:: SET IMGSZ=KB128
 
 :: Update the path to the Images folder according to the new directory structure
 SET IMAGE_PATH=%BATCH_DIR%..\Images\%IMGSZ%
 
-:: The following block of code starts the StoreSCU command in a minimized window titled "LOADER"
-:: The command is repeated 1,000,000 times
-:: +IP 1, +IS 2, and +IR 2000 are options for the command
-:: -xi specifies that the command should exit on invalid data
-:: -aet and -aec specify the calling and called AE titles
-:: The last argument is a wildcard for files in the %IMGSZ% directory
-:: After each command execution, the script sleeps for 2 seconds before starting the next command
-:: This block is repeated 10 times
+:: Execute the StoreSCU command in a minimized window titled "LOADER". The command is configured to send DICOM files and is repeated 2,000,000 times to simulate extensive usage.
+:: Repeating 2,000,000 times to generate 4,000 exams with 2 series each and 250 images per series (500 images per exam)
+:: There will be 15 simulated modalities in this test
 
 FOR /L %%i IN (1,1,15) DO (
-    START "LOADER" StoreSCU.exe -v --repeat 500000 +IP 1 +IS 2 +IR 10000 -xi -aet STORESCU -aec %AE% %SCP% %PORT% "%IMAGE_PATH%\*"
+    START "LOADER" StoreSCU.exe -v --repeat 2000000 +IP 1 +IS 2 +IR 250 -xi -aet STORESCU -aec %AE% %SCP% %PORT% "%IMAGE_PATH%\*"
     SLEEP 5

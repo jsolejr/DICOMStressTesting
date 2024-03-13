@@ -18,16 +18,16 @@ FOR /L %%G IN (1,1,%CCNTS%) DO (
     :: -xi specifies that the command should exit on invalid data
     :: -aet and -aec specify the calling and called AE titles
     :: The last argument is a wildcard for files in the KB128 directory
-    start /min StoreSCU.exe -v --repeat 4000 +IP 1 +IS 1 +IR 100 -xi -aet STORESCU -aec STORESCP128K %SCP% 9000 KB128\*
+    start /min StoreSCU.exe -v --repeat 4000 +IP 1 +IS 1 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% KB128\*
     
     :: Repeat the command for files in the KB256 directory
-    start /min StoreSCU.exe -v --repeat 4000 +IP 1 +IS 1 +IR 100 -xi -aet STORESCU -aec STORESCP256K %SCP% 9001 KB256\*
+    start /min StoreSCU.exe -v --repeat 4000 +IP 1 +IS 1 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% KB256\*
     
     :: Repeat the command for files in the KB512 directory
-    start /min StoreSCU.exe -v --repeat 4000 +IP 1 +IS 1 +IR 100 -xi -aet STORESCU -aec STORESCP512K %SCP% 9002 KB512\*
+    start /min StoreSCU.exe -v --repeat 4000 +IP 1 +IS 1 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% KB512\*
     
     :: Repeat the command for files in the MB01 directory
-    start /min StoreSCU.exe -v --repeat 4000 +IP 1 +IS 1 +IR 100 -xi -aet STORESCU -aec STORESCPMB01 %SCP% 9003 MB01\*
+    start /min StoreSCU.exe -v --repeat 4000 +IP 1 +IS 1 +IR 100 -xi -aet STORESCU -aec %AE% %SCP% %PORT% MB01\*
     
     :: Pause for 5 seconds before the next iteration of the loop
     SLEEP 5

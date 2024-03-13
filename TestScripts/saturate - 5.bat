@@ -14,21 +14,18 @@ CALL ..\Config\Config.bat
 SET OUT=%~n0-output.txt
 
 :: Specify the size of DICOM images that will be used in the StoreSCU command. Overwrites the config.bat value. Ensure this matches the folder name containing the images.
-SET IMGSZ=KB128
+:: Commented out to use the config.bat setting
+:: SET IMGSZ=KB128
 
 :: Update the path to the Images folder according to the new directory structure
 SET IMAGE_PATH=%BATCH_DIR%..\Images\%IMGSZ%
 
-:: Execute the StoreSCU command in a minimized window titled "LOADER". The command is configured to send DICOM files and is repeated 1,000,000 times to simulate extensive usage.
-:: The '+IP 1' option generates a new patient ID for every study, aiding in testing with unique patient data.
-:: The '+IS 2' option creates a new study UID after every 2 series, simulating multiple studies.
-:: The '+IR 2000' option invents a new series UID after every 2000 images, enhancing data diversity within studies.
-:: The '-xi' flag is used to propose the implicit VR little endian transfer syntax for DICOM communications.
-:: The '-aet STORESCU' sets the Application Entity Title of the SCU, and '-aec %AE%' specifies the Application Entity Title of the receiving SCP, as configured in Config.bat.
-:: The '%IMGSZ%\' part specifies the directory containing the DICOM files to be sent.
-:: Repeat the sending process four more times to ensure thorough testing, with a brief pause between each to prevent overloading the server.
+:: Execute the StoreSCU command in a minimized window titled "LOADER". The command is configured to send DICOM files and is repeated 2,000,000 times to simulate extensive usage.
+:: Repeating 2,000,000 times to generate 4,000 exams with 2 series each and 250 images per series (500 images per exam)
+:: There will be 5 simulated modalities in this test
+
 FOR /L %%i IN (1,1,5) DO (
-    START "LOADER" "%BATCH_DIR%StoreSCU.exe" -v --repeat 500000 +IP 1 +IS 2 +IR 2000 -xi -aet STORESCU -aec %AE% %SCP% %PORT% "%IMAGE_PATH%\*"
+    START "LOADER" "%BATCH_DIR%StoreSCU.exe" -v --repeat 2000000 +IP 1 +IS 2 +IR 250 -xi -aet STORESCU -aec %AE% %SCP% %PORT% "%IMAGE_PATH%\*"
     SLEEP 2
 )
 
