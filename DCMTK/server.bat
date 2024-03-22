@@ -6,4 +6,4 @@
 :: '-aet STORESCP' sets the Application Entity Title to 'STORESCP', identifying this SCP in the DICOM network.
 :: '--ignore Do not store images
 :: Port 9000 - Edit as needed
-start storescp.exe --fork -aet STORESCP --ignore 9000
+start storescp.exe -v --fork -aet STORESCP --ignore 9000

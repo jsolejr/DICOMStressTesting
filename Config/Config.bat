@@ -1,5 +1,5 @@
 REM --Put your Connection information here -- 
-SET AE=EnterCalledAEHere
+SET AE=STORESCU
 SET SCP=localhost
 SET PORT=9000
 
